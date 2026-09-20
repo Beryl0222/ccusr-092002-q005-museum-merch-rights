@@ -1,9 +1,26 @@
 {
+  "code": "LIC-2026-0041",
   "artwork_id": "work-2026-41",
-  "right_holder": "artist-estate-08",
-  "uses": ["exhibition-promotion", "product-reproduction"],
-  "channels": ["museum-store", "official-online-store"],
+  "holder_id": "artist-estate-08",
+  "status": "active",
+  "uses": ["reproduction", "promotion"],
+  "channels": ["museum-store", "official-online-store", "livestream"],
   "regions": ["CN"],
   "valid_from": "2026-08-01",
-  "valid_until": "2026-12-31"
+  "valid_until": "2026-12-31",
+  "sublicensable": false,
+  "royalty": {"type": "rate", "rate_bps": 800},
+  "holder_splits": [
+    {"holder_id": "artist-estate-08", "share_bps": 7000},
+    {"holder_id": "museum-partner-02", "share_bps": 3000}
+  ],
+  "evidence": [
+    {
+      "kind": "contract",
+      "document_ref": "contracts/LIC-2026-0041.pdf",
+      "checksum": "sha256:9f0c...",
+      "status": "verified"
+    }
+  ],
+  "note": "用途/渠道/地域三个维度必须同时命中；宣传(promotion)与商品复制(reproduction)互不可替代。快闪(pop-up)渠道须另签 LIC-2026-0041-POP。"
 }

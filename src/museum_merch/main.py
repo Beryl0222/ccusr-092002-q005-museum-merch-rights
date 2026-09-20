@@ -1,38 +1,30 @@
-"""美术馆文创服务入口。"""
+"""美术馆文创服务入口。
 
-import json
+启动前可用 museum_merch.seed.load_demo 写入演示数据（DATABASE_SEED=1）。
+"""
+
 import os
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+from . import seed
+from .api import make_server
 from .database import connect
+from .store import Store
 
 
-class Handler(BaseHTTPRequestHandler):
-    def do_GET(self) -> None:
-        if self.path != "/health":
-            self.send_error(404)
-            return
-        database = connect()
-        try:
-            database.execute("SELECT 1").fetchone()
-        finally:
-            database.close()
-        body = json.dumps(
-            {"status": "ok", "service": "美术馆文创授权履约系统"},
-            ensure_ascii=False,
-        ).encode("utf-8")
-        self.send_response(200)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
-
-    def log_message(self, format: str, *args: object) -> None:
-        return
+def build_store() -> Store:
+    conn = connect()
+    store = Store(conn)
+    store.init_schema()
+    if os.getenv("DATABASE_SEED") == "1":
+        seed.load_demo(store)
+    return store
 
 
 def run() -> None:
-    ThreadingHTTPServer(("0.0.0.0", int(os.getenv("PORT", "8080"))), Handler).serve_forever()
+    store = build_store()
+    server = make_server(
+        "0.0.0.0", int(os.getenv("PORT", "8080")), store)
+    server.serve_forever()
 
 
 if __name__ == "__main__":
