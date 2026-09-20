@@ -1,0 +1,6 @@
+[project]
+name = "museum-merch-rights"
+version = "0.1.0"
+description = "美术馆文创授权履约系统"
+requires-python = ">=3.12"
+dependencies = []
